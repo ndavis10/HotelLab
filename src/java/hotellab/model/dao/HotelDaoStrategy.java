@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package hotellab.dao;
+package hotellab.model.dao;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -16,7 +16,7 @@ import java.util.List;
 public interface HotelDaoStrategy {
 
     public abstract List<HotelModel> getAllHotels() throws ClassNotFoundException, SQLException, IOException;
-    //public abstract List<HotelModel> getTodaysTickets() throws ClassNotFoundException, SQLException, IOException;
+    public abstract List<HotelModel> getSingleHotel(int hotelID) throws ClassNotFoundException, SQLException, IOException;
     public abstract void createNewHotel(String hotelName, String streetAddress, String city, String state, String postalCode, String notes) throws ClassNotFoundException, SQLException, IOException;
     public abstract void updateHotel(int hotelID, String hotelName, String streetAddress, String city, String state, String postalCode, String notes) 
             throws ClassNotFoundException, SQLException, IOException;

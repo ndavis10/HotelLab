@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package hotellab.dao;
+package hotellab.model.dao;
 
 
 import java.io.FileNotFoundException;
@@ -22,7 +22,7 @@ import java.util.Map;
  */
 public class HotelDAO implements HotelDaoStrategy {
     private DatabaseAccessorStrategy db;
-    private static final String UPDATE_COLUMNS = "hotel_id, hotel_name, street_address, city, state, postal_code, notes";
+    private static final String UPDATE_COLUMNS = "hotel_name, street_address, city, state, postal_code, notes";
     private static final String INSERT_COLUMNS = "hotel_name, street_address, city, state, postal_code, notes";
     private static final String CONDITIONS_START = "hotel_id = ";
     private static final String TABLE_NAME = "Hotels";
@@ -44,6 +44,38 @@ public class HotelDAO implements HotelDaoStrategy {
             HotelModel hotel = new HotelModel();
             int hotelID = (Integer)map.get("hotel_id");
             hotel.setHotelID(hotelID);
+            String hotelName = (String)map.get("hotel_name");
+            hotel.setHotelName(hotelName);
+            String streetAddress = (String)map.get("street_address");
+            hotel.setStreetAddress(streetAddress);
+            String city = (String)map.get("city");
+            hotel.setCity(city);
+            String state = (String)map.get("state");
+            hotel.setState(state);
+            String postalCode = (String)map.get("postal_code");
+            hotel.setPostalCode(postalCode);
+            String notes = (String)map.get("notes");
+            hotel.setNotes(notes);
+            records.add(hotel);
+        }
+        
+        return records;
+    }
+    
+    @Override
+    /**
+     * Returns up to 50 hotels
+     * @return a list of up to 50 hotels
+     */
+    public List<HotelModel> getSingleHotel(int hotelID) throws ClassNotFoundException, SQLException, IOException {
+        String condition = CONDITIONS_START + Integer.toString(hotelID);
+        List<Map<String,Object>> rawRecords = db.getSelectedRecords(TABLE_NAME, condition, 50);
+        List<HotelModel> records = new ArrayList<>();
+        
+        for(Map<String,Object> map : rawRecords) {
+            HotelModel hotel = new HotelModel();
+            int modelHotelID = (Integer)map.get("hotel_id");
+            hotel.setHotelID(modelHotelID);
             String hotelName = (String)map.get("hotel_name");
             hotel.setHotelName(hotelName);
             String streetAddress = (String)map.get("street_address");
@@ -90,7 +122,7 @@ public class HotelDAO implements HotelDaoStrategy {
             throws ClassNotFoundException, SQLException, IOException
     {
         //generate conditions
-        String values = "" + hotelID + ", " + hotelName + ", " + streetAddress + ", " + city + ", " + state + ", " + postalCode + ", " + notes;
+        String values = hotelName + ", " + streetAddress + ", " + city + ", " + state + ", " + postalCode + ", " + notes;
         String condition = CONDITIONS_START + Integer.toString(hotelID);
         db.updateRow(TABLE_NAME, UPDATE_COLUMNS, values, condition);
     }

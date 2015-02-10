@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package hotellab.dao;
+package hotellab.model.dao;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -48,7 +48,7 @@ public class MySqlServerDatabaseAccessor implements DatabaseAccessorStrategy {
 
         List<Map<String,Object>> records = new ArrayList<>();
         stmt = conn.createStatement();
-        String sql = "select top " + maxRecords + " * from " + tableName;
+        String sql = "select * from " + tableName + " limit " + maxRecords;
         rs = stmt.executeQuery(sql);
         
         ResultSetMetaData metaData = rs.getMetaData();	
@@ -75,7 +75,7 @@ public class MySqlServerDatabaseAccessor implements DatabaseAccessorStrategy {
             openConnection();
 
             stmt = conn.createStatement();
-            String sql = "select top " + maxRecords + " * from " + tableName + " where " + condition;
+            String sql = "select * from " + tableName + " where " + condition + " limit " + maxRecords;
             rs = stmt.executeQuery(sql);
 
             ResultSetMetaData metaData = rs.getMetaData();	
@@ -105,8 +105,22 @@ public class MySqlServerDatabaseAccessor implements DatabaseAccessorStrategy {
 
             stmt = conn.createStatement();
 
-            String sql = "Insert into " + tableName + "(" + columns + ") values(" + values + ")";
+            String[] columnsArr = columns.trim().split(",");
+            String[] valuesArr = values.trim().split(",");
+            if(columnsArr.length != valuesArr.length)
+            {
+                throw new IllegalArgumentException("Number of columns and values do not match!");
+            }
 
+            String sql = "Insert into " + tableName + "(" + columns + ") values(";
+
+            for(int i = 0; i < columnsArr.length; i++)
+            {
+                 sql = sql + "'" + valuesArr[i].trim() + "'" + (i < columnsArr.length - 1 ? "," : "");
+            }
+            
+            sql = sql + ")";
+            
             stmt.executeUpdate(sql);
         }
         finally{
@@ -163,9 +177,9 @@ public class MySqlServerDatabaseAccessor implements DatabaseAccessorStrategy {
             stmt = conn.createStatement();
             
             String sql = "DELETE FROM " + tableName;
-            sql = sql + " " + conditions;
+            sql = sql + " WHERE " + conditions;
             
-            stmt.executeQuery(sql);
+            stmt.executeUpdate(sql);
         }
         finally
         {

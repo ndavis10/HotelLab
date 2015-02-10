@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package hotellab.dao;
+package hotellab.model.dao;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -54,7 +54,7 @@ public final class DatabaseFactory {
             String password = props.getProperty("db.password");
             
             Class.forName (driverClass);
-            conn = DriverManager.getConnection(url,username, password);
+            conn = DriverManager.getConnection(url, username, password);
             
         
         return conn;
