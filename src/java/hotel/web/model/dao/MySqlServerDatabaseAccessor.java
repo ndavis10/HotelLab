@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package hotellab.model.dao;
+package hotel.web.model.dao;
 
 import java.io.IOException;
 import java.sql.Connection;
