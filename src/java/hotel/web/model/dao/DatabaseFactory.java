@@ -40,7 +40,8 @@ public final class DatabaseFactory {
 
         // First read config setting in properties file
 //        File file = new File("/temp/config.properties");
-        File file = new File("src/dbconfig.properties");
+        File file = new File("../conf/Catalina/localhost/dbconfig.properties");
+        System.out.println(file.getAbsolutePath());
         Properties props = new Properties();
         FileInputStream inFile;
             inFile = new FileInputStream(file);
@@ -67,7 +68,8 @@ public final class DatabaseFactory {
 
         // First read config setting in properties file
 //        File file = new File("/temp/config.properties");
-        File file = new File("src/dbconfig.properties");
+        File file = new File("../conf/Catalina/localhost/dbconfig.properties");
+        System.out.println(file.getAbsolutePath());
         Properties props = new Properties();
         FileInputStream inFile;
             inFile = new FileInputStream(file);
